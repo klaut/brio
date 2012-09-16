@@ -8,7 +8,7 @@ module Brio
     DEFAULT_API_HOST = 'alpha-api.app.net'
     DEFAULT_PROTOCOL = 'https'
 
-    REDIRECT_URI = 'http://heroesneverpanic.com/'
+    REDIRECT_URI = 'http://brioapp.herokuapp.com/auth/callback/'
     SCOPE = 'stream,email,write_post,follow,messages,export'
     RESPONSE_TYPE = 'token'
 
