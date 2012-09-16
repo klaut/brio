@@ -1,5 +1,1 @@
 = brio
-
-Generate this with
-    brio rdoc
-After you have described your command line interface
