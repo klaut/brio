@@ -1,6 +1,6 @@
-= brio
+= brio - CLI power tools for app.net
 
-Describe your project here
+Still in development... more coming soon
 
 :include:brio.rdoc
 
