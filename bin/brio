@@ -1,0 +1,137 @@
+#!/usr/bin/env ruby
+require 'gli'
+require 'highline/import'
+require 'launchy'
+require 'brio'
+
+include GLI::App
+
+program_desc 'command line client for app.net inspired by t for twitter'
+
+version Brio::VERSION
+
+client = Brio::Client.new
+
+# desc 'Describe some switch here'
+# switch [:s,:switch]
+
+desc 'authorize brio with app.net'
+skips_pre
+command :authorize do |c|
+  c.action do |global_options,options,args|
+
+    if client.config.empty?
+      say "Welcome! Before you can use *brio* you need to authorize it with app.net"
+      ask "Press [Enter] to open the app.net site."
+      say ""
+
+      Launchy.open client.oauth_url
+      token = ask "Enter your oauth token:"
+
+      client.config['token'] = token
+
+      say "Authorization successful."
+    else
+      say "You already authorized with app.net"
+    end
+
+  end
+end
+
+desc "Retrives Posts in the stream. Defaults to user's stream"
+command :stream do |c|
+  c.desc 'Retrives Posts from the global stream.'
+  c.switch [:g, :global]
+
+  c.desc 'The number of latest Posts to return, up to a maximum of 200'
+  c.default_value '10'
+  c.flag [:c, :count]
+
+  c.action do |global_options,options,args|
+    r = client.get_stream options[:global], options[:c]
+    r['data'].each do |post|
+      say "#{post['id']} :: #{post['user']['username']} :: #{post['text']} :: [ #{post['created_at']} ]"
+      say "*******************"
+    end
+  end
+end
+
+desc 'Make a new Post to app.net'
+arg_name 'message'
+command :post do |c|
+  c.action do |global_options,options,args|
+    help_now!('message is required') if args.empty?
+    response =  client.post args[0]
+    say response
+  end
+end
+
+desc 'Look up a user. If no argument is provided, it defualts to the current authenticated user'
+default_value 'me'
+arg_name 'username'
+command :whois do |c|
+  #do not forget to attach @
+  c.action do |global_options,options,args|
+    puts "whois command ran"
+  end
+end
+
+desc 'List the posts where the user is mentioned. It defualts to the current authenticated user'
+default_value 'me'
+arg_name 'username'
+command :mentions do |c|
+  c.action do |global_options,options,args|
+    puts "mentions command ran"
+  end
+end
+
+desc 'Follow a user'
+arg_name 'username'
+command :follow do |c|
+  c.action do |global_options,options,args|
+    help_now!('username is required') if args.empty?
+    puts "follow command ran"
+  end
+end
+
+desc 'List all accounts that a user is following. It defualts to the current authenticated user'
+default_value 'me'
+arg_name 'username'
+command :following do |c|
+  c.action do |global_options,options,args|
+    puts "follow command ran"
+  end
+end
+
+desc 'list all accounts that are following a user - it defualts to the current authenticated user'
+default_value 'me'
+arg_name 'username'
+command :followers do |c|
+  c.action do |global_options,options,args|
+    puts "follow command ran"
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abourt and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  exit_now!('You need to authorize with app.net. Run `brio authorize` to do so.') if client.config.empty?  
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)

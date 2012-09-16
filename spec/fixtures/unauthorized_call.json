@@ -1,0 +1,7 @@
+{
+    "error": {
+        "code": 401,
+        "id": "e299977c57d34945a42a815e8c63d782$32a85f1c22e98de98ea2ddabaf76c5ae",
+        "message": "Call requires authentication: This view requires authentication and no token was provided."
+    }
+}
