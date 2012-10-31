@@ -18,12 +18,16 @@ module Brio
       "#{protocol}://#{oauth_host}/oauth/authenticate?client_id=#{CLIENT_ID}&response_type=#{RESPONSE_TYPE}&scope=#{SCOPE}&redirect_uri=#{REDIRECT_URI}"
     end
 
-    def user_stream_url
-      "/stream/0/posts/stream"
+    def user_stream_url()
+      stream_url
     end
 
     def global_stream_url
-      "/stream/0/posts/stream/global"
+      stream_url 'global'
+    end
+
+    def stream_url(scope="")
+      "/stream/0/posts/stream/#{scope}"
     end
 
     def posts_url(id ="")

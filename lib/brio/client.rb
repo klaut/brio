@@ -1,4 +1,4 @@
-require 'faraday'
+require 'faraday_middleware'
 require 'json'
 
 module Brio
@@ -8,7 +8,8 @@ module Brio
 
     def initialize
       @conn = Faraday.new(:url => base_api_url ) do |faraday|
-        faraday.request  :url_encoded
+        faraday.request  :json #:url_encoded
+        faraday.response :json, :content_type => /\bjson$/
         faraday.adapter  Faraday.default_adapter
       end
       @rc = Brio::RCFile.instance
@@ -25,7 +26,7 @@ module Brio
       else 
         r = @conn.get user_stream_url ,  { :count => count } 
       end
-      JSON.parse(r.body)
+      r.body
     end
 
     def post( text )
@@ -34,7 +35,7 @@ module Brio
         req.headers['Content-Type'] = 'application/json'
         req.body = { text: "#{text}" }.to_json
       end
-      JSON.parse(r.body)
+      r.body
     end
 
     private 

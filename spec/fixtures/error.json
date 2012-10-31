@@ -1,7 +1,7 @@
 {
-    "error": {
+    "meta": {
         "code": 405,
         "id": "fa6361cc578c45b9bdc8f7138e2bd6b4$6c10984086364ba414bf55a0e720941c",
-        "message": "error message"
+        "error_message": "error message"
     }
 }
