@@ -20,7 +20,7 @@ module Brio
       @rc
     end
 
-    def get_stream( global = false, count = 10 )
+    def stream( global = false, count = 10 )
       if global
         r = @conn.get global_stream_url, { :count => count } 
       else 
@@ -40,7 +40,15 @@ module Brio
 
     private 
     def add_oauth_header
-      @conn.authorization :bearer, @rc['token']
+      @conn.authorization :bearer, config['token']
+    end
+
+    def user_stream_url()
+      stream_url
+    end
+
+    def global_stream_url
+      stream_url 'global'
     end
 
   end

@@ -48,7 +48,7 @@ command :stream do |c|
   c.flag [:c, :count]
 
   c.action do |global_options,options,args|
-    r = client.get_stream options[:global], options[:c]
+    r = client.stream options[:global], options[:c]
     r['data'].each do |post|
       say "#{post['id']} :: #{post['user']['username']} :: #{post['text']} :: [ #{post['created_at']} ]"
       say "*******************"
@@ -60,8 +60,13 @@ desc 'Make a new Post to app.net'
 arg_name 'message'
 command :post do |c|
   c.action do |global_options,options,args|
-    help_now!('message is required') if args.empty?
-    response =  client.post args[0]
+    if args.empty?
+      message = ask "Whats on your mind:"
+    else
+      message = args[0]
+    end
+    help_now!('message is required') if message.empty?
+    response =  client.post message
     say response
   end
 end

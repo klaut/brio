@@ -8,7 +8,7 @@ module Brio
     DEFAULT_API_HOST = 'alpha-api.app.net'
     DEFAULT_PROTOCOL = 'https'
 
-    REDIRECT_URI = 'http://brioapp.herokuapp.com/auth/callback/'
+    REDIRECT_URI = 'https://brioapp.herokuapp.com/auth/callback/'
     SCOPE = 'stream,email,write_post,follow,messages,export'
     RESPONSE_TYPE = 'token'
 
@@ -16,14 +16,6 @@ module Brio
     
     def oauth_url
       "#{protocol}://#{oauth_host}/oauth/authenticate?client_id=#{CLIENT_ID}&response_type=#{RESPONSE_TYPE}&scope=#{SCOPE}&redirect_uri=#{REDIRECT_URI}"
-    end
-
-    def user_stream_url()
-      stream_url
-    end
-
-    def global_stream_url
-      stream_url 'global'
     end
 
     def stream_url(scope="")
