@@ -16,6 +16,10 @@ lib/brio/version.rb
 lib/brio/api.rb
 lib/brio/client.rb
 lib/brio/rcfile.rb
+lib/brio/format/cvs.rb
+lib/brio/format/pretty.rb
+lib/brio/resources/user.rb
+lib/brio/resources/post.rb
 lib/brio.rb
   )
   s.require_paths << 'lib'

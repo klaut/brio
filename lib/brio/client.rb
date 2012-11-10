@@ -20,7 +20,7 @@ module Brio
       @rc
     end
 
-    def stream( global = false, count = 10 )
+    def stream( global = false, count = 20 )
       if global
         r = @conn.get global_stream_url, { :count => count } 
       else 

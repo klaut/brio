@@ -1,5 +1,9 @@
 require 'brio/version.rb'
 require 'brio/rcfile.rb'
+require 'brio/format/csv.rb'
+require 'brio/format/pretty.rb'
+require 'brio/resources/user.rb'
+require 'brio/resources/post.rb'
 require 'brio/api.rb'
 require 'brio/client.rb'
 

@@ -12,6 +12,11 @@ version Brio::VERSION
 
 client = Brio::Client.new
 
+output_formats = {
+    'csv' => Brio::Format::CSV.new,
+    'pretty' => Brio::Format::Pretty.new
+  }
+
 # desc 'Describe some switch here'
 # switch [:s,:switch]
 
@@ -44,14 +49,25 @@ command :stream do |c|
   c.switch [:g, :global]
 
   c.desc 'The number of latest Posts to return, up to a maximum of 200'
-  c.default_value '10'
+  c.default_value '20'
   c.flag [:c, :count]
 
+  c.desc 'Optional. Format of the output (pretty for TTY, csv otherwise)'
+  c.arg_name 'csv|pretty'
+  c.flag :format
+
   c.action do |global_options,options,args|
+    if options[:format].nil?
+      if STDOUT.tty? 
+        options[:format] = 'pretty'
+      else
+        options[:format] = 'csv'
+      end
+    end
+    formatter = output_formats[options[:format]]
     r = client.stream options[:global], options[:c]
     r['data'].each do |post|
-      say "#{post['id']} :: #{post['user']['username']} :: #{post['text']} :: [ #{post['created_at']} ]"
-      say "*******************"
+      say formatter.format_stream post
     end
   end
 end
@@ -67,7 +83,8 @@ command :post do |c|
     end
     help_now!('message is required') if message.empty?
     response =  client.post message
-    say response
+    puts response
+    #say response
   end
 end
 
@@ -114,6 +131,15 @@ arg_name 'username'
 command :followers do |c|
   c.action do |global_options,options,args|
     puts "follow command ran"
+  end
+end
+
+desc 'List all accounts that a user is following and they follow her back. It defualts to the current authenticated user'
+default_value 'me'
+arg_name 'username'
+command :friends do |c|
+  c.action do |global_options,options,args|
+    puts "friends command ran"
   end
 end
 

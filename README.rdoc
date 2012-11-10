@@ -1,4 +1,4 @@
-= brio - CLI power tools for app.net
+= brio - CLI power tools for appdotnet
 
 Still in development... more coming soon
 
