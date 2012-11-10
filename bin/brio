@@ -82,7 +82,7 @@ command :post do |c|
     end
     help_now!('message is required') if message.empty?
     post =  client.post message
-    say "Mesage Posted."
+    say "<%= color('Message posted OK', :green) %>"
   end
 end
 
