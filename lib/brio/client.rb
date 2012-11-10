@@ -1,10 +1,11 @@
 require 'faraday_middleware'
 require 'json'
+require 'brio/resources/post.rb'
 
 module Brio
 
   class Client
-    include Brio::API
+    include API
 
     def initialize
       @conn = Faraday.new(:url => base_api_url ) do |faraday|
@@ -12,7 +13,7 @@ module Brio
         faraday.response :json, :content_type => /\bjson$/
         faraday.adapter  Faraday.default_adapter
       end
-      @rc = Brio::RCFile.instance
+      @rc = RCFile.instance
       add_oauth_header unless @rc.empty?
     end
 
@@ -21,12 +22,9 @@ module Brio
     end
 
     def get_stream( global = false, count = 20 )
-      if global
-        r = @conn.get global_stream_url, { :count => count } 
-      else 
-        r = @conn.get user_stream_url ,  { :count => count } 
-      end
-      r.body
+      scope = if global then 'global' else '' end
+      r = @conn.get stream_url( scope ) ,  { :count => count }
+      Resources::Post.create_many_from_json r.body
     end
 
     def post( text )
@@ -35,20 +33,12 @@ module Brio
         req.headers['Content-Type'] = 'application/json'
         req.body = { text: "#{text}" }.to_json
       end
-      r.body
+      Resources::Post.create_from_json r.body
     end
 
     private 
     def add_oauth_header
       @conn.authorization :bearer, config['token']
-    end
-
-    def user_stream_url
-      stream_url
-    end
-
-    def global_stream_url
-      stream_url 'global'
     end
 
   end

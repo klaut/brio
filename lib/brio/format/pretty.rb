@@ -6,14 +6,15 @@ module Brio
     class Pretty
 
       HighLine.color_scheme = HighLine::ColorScheme.new do |cs|
-        cs[:username]        = [ :bold, :green ]
-        cs[:end_line]        = [ :magenta ]
+        cs[:username]        = [ :magenta ]
+        cs[:end_line]        = [ :green ]
+        cs[:mention]        = [ :black, :on_white ]
       end
 
       def print_post( post )
-        say "<%= color('@#{post['user']['username']}', :username) %>"
-        say "#{post['text']}"
-        say "<%= color('#{post['id']} (#{pretty_format_time(post['created_at'])})', :end_line) %>"
+        say "<%= color('@#{post.username}', :username) %>"
+        say "#{post.text}"
+        say "<%= color('#{post.id} (#{pretty_format_time(post.created_at)})', :end_line) %>"
         say "\n"
       end
 

@@ -6,7 +6,7 @@ module Brio
 
     class CSV
       def print_post( post )
-        say [post['id'], csv_formatted_time(post['created_at']), post['user']['username'], post['text']].to_csv
+        say [post.id, csv_formatted_time(post.created_at), post.username, post.text].to_csv
       end
 
       private
@@ -16,8 +16,7 @@ module Brio
       #   time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
       # end
       def csv_formatted_time( timestr )
-        time = Time.parse timestr
-        time.utc.strftime("%Y-%m-%d %H:%M:%S %z")
+        Time.parse( timestr ).utc.strftime("%Y-%m-%d %H:%M:%S %z")
       end
     end
 

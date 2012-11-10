@@ -64,8 +64,8 @@ command :stream do |c|
       end
     end
     formatter = output_formats[options[:format]]
-    r = client.get_stream options[:global], options[:c]
-    r['data'].each do |post|
+    posts = client.get_stream options[:global], options[:c]
+    posts.each do |post|
       formatter.print_post post
     end
   end
@@ -81,9 +81,8 @@ command :post do |c|
       message = args[0]
     end
     help_now!('message is required') if message.empty?
-    response =  client.post message
-    puts response
-    #say response
+    post =  client.post message
+    say "Mesage Posted."
   end
 end
 
