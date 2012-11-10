@@ -34,7 +34,6 @@ command :authorize do |c|
       token = ask "Enter your oauth token:"
 
       client.config['token'] = token
-
       say "Authorization successful."
     else
       say "You already authorized with app.net"
@@ -65,9 +64,9 @@ command :stream do |c|
       end
     end
     formatter = output_formats[options[:format]]
-    r = client.stream options[:global], options[:c]
+    r = client.get_stream options[:global], options[:c]
     r['data'].each do |post|
-      say formatter.format_stream post
+      formatter.print_post post
     end
   end
 end

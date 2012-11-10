@@ -1,13 +1,20 @@
 module Brio
   module Format
     require 'time'
+    require 'highline/import'
 
     class Pretty
 
-      def format_stream( post )
-        # "#{post['id']} :: #{post['user']['username']} :: #{post['text']} :: [ #{post['created_at']} ]"
-        # printf("%2d - %s\n",index,task.name) printf(" %-10s %s\n","Created:",task.created_date)
-        sprintf("%s (%s)\n %-8s - %s\n\n", post['user']['username'], pretty_format_time(post['created_at']), post['id'], post['text'])
+      HighLine.color_scheme = HighLine::ColorScheme.new do |cs|
+        cs[:username]        = [ :bold, :green ]
+        cs[:end_line]        = [ :magenta ]
+      end
+
+      def print_post( post )
+        say "<%= color('@#{post['user']['username']}', :username) %>"
+        say "#{post['text']}"
+        say "<%= color('#{post['id']} (#{pretty_format_time(post['created_at'])})', :end_line) %>"
+        say "\n"
       end
 
 
