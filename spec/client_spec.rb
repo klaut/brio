@@ -56,10 +56,30 @@ module Brio
           @endpoint = stub_post('/stream/0/posts/')
         end
 
-        it "should tell OK if posting successful" do
+        it "should be OK if posting successful" do
           @endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-          response = @client.post @text
+          response = @client.post text: @text
+          a_post('/stream/0/posts/').with(body: {text: "#{@text}"}, :headers => {'Content-Type' => 'application/json'}).should have_been_made
           response.should be_kind_of Resources::Post
+        end
+
+        it "should create NullPost if error returned from ADN" do
+          @endpoint.to_return(:body => fixture_as_json("error.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          response = @client.post text: @text
+          response.should be_kind_of Resources::NullPost
+        end
+
+        it 'should be able to delete a post' do
+          endpoint = stub_delete('/stream/0/posts/1')
+          endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          response = @client.delete_post '1'
+          endpoint.should have_been_requested
+        end
+
+        it 'should be able to reply to a post' do
+          @endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          response = @client.post reply_to: '1', text: @text
+          a_post('/stream/0/posts/').with(body: {text: "#{@text}", reply_to: "1"}, :headers => {'Content-Type' => 'application/json'}).should have_been_made
         end
       end
 

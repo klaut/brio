@@ -73,7 +73,7 @@ command :post do |c|
       message = args[0]
     end
     help_now!('message is required') if message.empty?
-    post =  client.post message
+    post =  client.post text: message
     say "<%= color('Message [id #{post.id}] posted OK', :green) %>" if post.is_a? Brio::Resources::Post
     say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullPost
   end
@@ -88,8 +88,8 @@ command :post do |c|
       else
         message = args[1]
       end
-      help_now!('postID and message are both required') if args.size == 1
-      post =  client.reply_to_post args[0], message
+      help_now!('postID and message are both required') if message.empty?
+      post =  client.post reply_to: args[0], text: message
       say "<%= color('Reply [id #{post.id}] posted OK', :green) %>" if post.is_a? Brio::Resources::Post
       say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullPost
     end

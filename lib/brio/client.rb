@@ -27,11 +27,11 @@ module Brio
       Resources::Post.create_many_from_json r.body
     end
 
-    def post( text )
+    #body_hash: { text: message, reply_to: post_id }
+    def post( body_hash )
       r = @conn.post do |req|
         req.url posts_url
-        req.headers['Content-Type'] = 'application/json'
-        req.body = { text: "#{text}" }.to_json
+        req.body = body_hash
       end
       Resources::Post.create_from_json r.body
     end
@@ -39,19 +39,17 @@ module Brio
     def delete_post( id )
       r = @conn.delete do |req|
         req.url posts_url( id )
-        req.headers['Content-Type'] = 'application/json'
       end
       Resources::Post.create_from_json r.body
     end
 
-    def reply_to_post( id, text )
-      r = @conn.post do |req|
-        req.url posts_url
-        req.headers['Content-Type'] = 'application/json'
-        req.body = { text: "#{text}", reply_to: "#{id}" }.to_json
-      end
-      Resources::Post.create_from_json r.body
-    end
+    # def reply_to_post( id, text )
+    #   r = @conn.post do |req|
+    #     req.url posts_url
+    #     req.body = { text: "#{text}", reply_to: "#{id}" }
+    #   end
+    #   Resources::Post.create_from_json r.body
+    # end
 
     def repost( id )
     end
