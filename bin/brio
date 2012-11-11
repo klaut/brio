@@ -19,6 +19,9 @@ output_formats = {
 
 # desc 'Describe some switch here'
 # switch [:s,:switch]
+desc 'Optional. Format of the output (default: pretty for TTY, csv otherwise)'
+arg_name 'csv|pretty'
+flag :format
 
 desc 'authorize brio with app.net'
 skips_pre
@@ -51,19 +54,8 @@ command :stream do |c|
   c.default_value '20'
   c.flag [:c, :count]
 
-  c.desc 'Optional. Format of the output (pretty for TTY, csv otherwise)'
-  c.arg_name 'csv|pretty'
-  c.flag :format
-
   c.action do |global_options,options,args|
-    if options[:format].nil?
-      if STDOUT.tty? 
-        options[:format] = 'pretty'
-      else
-        options[:format] = 'csv'
-      end
-    end
-    formatter = output_formats[options[:format]]
+    formatter = output_formats[global_options[:format]]
     posts = client.get_stream options[:global], options[:c]
     posts.each do |post|
       formatter.print_post post
@@ -71,7 +63,7 @@ command :stream do |c|
   end
 end
 
-desc 'Make a new Post to app.net'
+desc 'Make a new Post to appdotnet. Delete a post. Reply to a post.. see `brio help post` for more.'
 arg_name 'message'
 command :post do |c|
   c.action do |global_options,options,args|
@@ -82,8 +74,38 @@ command :post do |c|
     end
     help_now!('message is required') if message.empty?
     post =  client.post message
-    say "<%= color('Message posted OK', :green) %>"
+    say "<%= color('Message [id #{post.id}] posted OK', :green) %>" if post.is_a? Brio::Resources::Post
+    say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullPost
   end
+
+  c.desc 'Reply to a post'
+  c.arg_name 'postID message'
+  c.command :reply do |reply|
+    reply.action do |global_options,options,args|
+      help_now!('postID and message are both required') if args.empty?
+      if args.size == 1
+        message = ask "Your reply:"
+      else
+        message = args[1]
+      end
+      help_now!('postID and message are both required') if args.size == 1
+      post =  client.reply_to_post args[0], message
+      say "<%= color('Reply [id #{post.id}] posted OK', :green) %>" if post.is_a? Brio::Resources::Post
+      say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullPost
+    end
+  end
+
+  c.desc 'Delete a post (only if created by you)'
+  c.arg_name 'postID'
+  c.command :delete do |delete|
+    delete.action do |global_options,options,args|
+      help_now!('postID is required') if args.empty?
+      post = client.delete_post args[0]
+      say "<%= color('Post deleted OK', :green) %>" if post.is_a? Brio::Resources::Post
+      say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullPost
+    end
+  end
+
 end
 
 desc 'Look up a user. If no argument is provided, it defualts to the current authenticated user'
@@ -96,14 +118,6 @@ command :whois do |c|
   end
 end
 
-desc 'List the posts where the user is mentioned. It defualts to the current authenticated user'
-default_value 'me'
-arg_name 'username'
-command :mentions do |c|
-  c.action do |global_options,options,args|
-    puts "mentions command ran"
-  end
-end
 
 desc 'Follow a user'
 arg_name 'username'
@@ -111,6 +125,15 @@ command :follow do |c|
   c.action do |global_options,options,args|
     help_now!('username is required') if args.empty?
     puts "follow command ran"
+  end
+end
+
+desc 'List the posts where the user is mentioned. It defualts to the current authenticated user'
+default_value 'me'
+arg_name 'username'
+command :mentions do |c|
+  c.action do |global_options,options,args|
+    puts "mentions command ran"
   end
 end
 
@@ -147,7 +170,14 @@ pre do |global,command,options,args|
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
-  exit_now!('You need to authorize with app.net. Run `brio authorize` to do so.') if client.config.empty?  
+  exit_now!('You need to authorize with app.net. Run `brio authorize` to do so.') if client.config.empty? 
+  if global[:format].nil?
+    if STDOUT.tty? 
+      global[:format] = 'pretty'
+    else
+      global[:format] = 'csv'
+    end
+  end 
   true
 end
 

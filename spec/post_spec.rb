@@ -21,6 +21,12 @@ module Brio
           post.text.should == '@berg FIRST post on this new site #newsocialnetwork'
         end 
 
+        it 'should create a NullPost if error returned' do
+          post = Post.create_from_json @error_json
+          post.text.should == '405 - error message'
+          post.should be_kind_of NullPost
+        end
+
       end
 
       describe 'Creating multiple Post objects' do

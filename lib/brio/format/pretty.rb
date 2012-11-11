@@ -14,7 +14,7 @@ module Brio
       def print_post( post )
         say "<%= color('@#{post.username}', :username) %>"
         say "#{post.text}"
-        say "<%= color('#{post.id} (#{pretty_format_time(post.created_at)})', :end_line) %>"
+        say "<%= color('id: #{post.id} (#{pretty_format_time(post.created_at)})', :end_line) %>"
         say "\n"
       end
 

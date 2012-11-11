@@ -2,13 +2,13 @@ PATH
   remote: .
   specs:
     brio (0.0.1)
-      faraday
-      faraday_middleware
-      gli
-      highline
-      htmlentities
-      json
-      launchy
+      faraday (>= 0.8)
+      faraday_middleware (>= 0.8.8)
+      gli (~> 2.4)
+      highline (>= 1.6)
+      htmlentities (>= 4.3)
+      json (~> 1.7)
+      launchy (>= 2.1)
 
 GEM
   remote: http://rubygems.org/

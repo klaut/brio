@@ -6,7 +6,11 @@ module Brio
       attr_reader :id, :username, :created_at, :text
 
       def self.create_from_json( json )
-        Post.new json['data']
+        if json['data']
+          Post.new json['data']
+        else
+          NullPost.new json['meta']
+        end
       end
 
       def self.create_many_from_json ( json )     
@@ -17,9 +21,18 @@ module Brio
         @id = data['id']
         @username = data['user']['username']
         @created_at = data['created_at']
-        @text = data['text'].strip
+        @text = (data['text'] || '').strip
       end
 
+    end
+
+
+    class NullPost
+      attr_reader :text
+
+      def initialize( data )
+        @text = "#{data['code']} - #{data['error_message']}"
+      end
     end
 
   end
