@@ -39,6 +39,7 @@ module Brio
         stub_get('/stream/0/posts/stream/global').with(:query => {"count" => 20, "include_deleted" => 0}).
           to_return(:body => fixture_as_json("global_stream.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         response = @client.get_stream(true)
+        a_get('/stream/0/posts/stream/global').with(:query => {"count" => 20, "include_deleted" => 0}).should have_been_made
         response.last.text.should == "This is global stream"
       end
 

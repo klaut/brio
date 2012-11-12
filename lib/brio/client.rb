@@ -27,7 +27,7 @@ module Brio
       Resources::Post.create_many_from_json r.body
     end
 
-    #body_hash: { text: message, reply_to: post_id }
+    #body_hash: { text: message, [reply_to: post_id] }
     def post( body_hash )
       r = @conn.post do |req|
         req.url posts_url
@@ -42,14 +42,6 @@ module Brio
       end
       Resources::Post.create_from_json r.body
     end
-
-    # def reply_to_post( id, text )
-    #   r = @conn.post do |req|
-    #     req.url posts_url
-    #     req.body = { text: "#{text}", reply_to: "#{id}" }
-    #   end
-    #   Resources::Post.create_from_json r.body
-    # end
 
     def repost( id )
     end
