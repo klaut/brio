@@ -1,5 +1,5 @@
 require 'faraday_middleware'
-require 'json'
+#require 'json'
 require 'brio/resources/post.rb'
 
 module Brio
@@ -27,6 +27,25 @@ module Brio
       Resources::Post.create_many_from_json r.body
     end
 
+    # @client.post :create, text: "tralala"
+    # @client.post :delete, id: '1'
+    # @client.post :reply, to: '1', text: 'yo'
+    # method: :create, :delete ....
+    # options = {id:, text:}
+    # def dpost( method, options )
+    #   verb, id, body_hash = case method
+    #     when :create then [:post, nil, options]
+    #     when :reply then [:post, nil, {reply_to: options[:id], text: options[:text]}]
+    #     when :delete then [:delete, options[:id], nil]
+    #     else method
+    #   end
+    #   r = @conn.method(verb).call do |req|
+    #     req.url posts_url
+    #     req.body = body_hash
+    #   end
+    #   Resources::Post.create_from_json r.body
+    # end
+
     #body_hash: { text: message, [reply_to: post_id] }
     def post( body_hash )
       r = @conn.post do |req|
@@ -44,6 +63,10 @@ module Brio
     end
 
     def repost( id )
+      r = @conn.post do |req|
+        req.url repost_url( id )
+      end
+      Resources::Post.create_from_json r.body
     end
 
     private 

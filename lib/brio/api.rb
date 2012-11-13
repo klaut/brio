@@ -18,6 +18,8 @@ module Brio
       "#{protocol}://#{oauth_host}/oauth/authenticate?client_id=#{CLIENT_ID}&response_type=#{RESPONSE_TYPE}&scope=#{SCOPE}&redirect_uri=#{REDIRECT_URI}"
     end
 
+    # POSTS
+
     def stream_url(scope="")
       "/stream/0/posts/stream/#{scope}"
     end
@@ -26,9 +28,39 @@ module Brio
       "/stream/0/posts/#{id}"
     end
 
-    # id can be also @username
+    def repost_url(id)
+      "#{posts_url id}/repost"
+    end
+
+    def star_url(id)
+      "#{posts_url id}/star"
+    end
+
+    def post_starred_by_url(id)
+      "#{posts_url id}/stars"
+    end
+
+    def replies_url(id)
+      "#{posts_url id}/replies"
+    end
+
+    # USERS
+
     def users_url( id = "me")
+      # id can be also @username
       "/stream/0/users/#{id}"
+    end
+
+    def user_posts_url(id = 'me')
+      "#{users_url id}/posts"
+    end
+
+    def user_stars_url(id = 'me')
+      "#{users_url id}/stars"
+    end
+
+    def mentions_url(id = 'me')
+      "#{users_url id}/mentions"
     end
 
     private

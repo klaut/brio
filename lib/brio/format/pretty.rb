@@ -7,7 +7,7 @@ module Brio
 
       HighLine.color_scheme = HighLine::ColorScheme.new do |cs|
         cs[:username]        = [ :red ]
-        cs[:end_line]        = [ :yellow ]
+        cs[:end_line]        = [ :yellow] #:rgb_aaaaaa
         cs[:mention]        = [ :black, :on_white ]
       end
 

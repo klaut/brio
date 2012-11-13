@@ -57,6 +57,15 @@ module Brio
           @endpoint = stub_post('/stream/0/posts/')
         end
 
+        # it 'should have a cool post method' do
+        #   @client.dpost :create, text: "tralala"
+        #   @client.dpost :delete, id: '1'
+        #   @client.dpost :reply, to: '1', text: 'yo'
+        #   # @client.post :repost, id: '1'
+        #   # @client.post :star, id: '1'
+        #   # @client.post :replies, id: '1'
+        # end
+
         it "should be OK if posting successful" do
           @endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           response = @client.post text: @text
@@ -81,6 +90,13 @@ module Brio
           @endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           response = @client.post reply_to: '1', text: @text
           a_post('/stream/0/posts/').with(body: {text: "#{@text}", reply_to: "1"}, :headers => {'Content-Type' => 'application/json'}).should have_been_made
+        end
+
+        it 'should be able to repost a post' do
+          endpoint = stub_post('/stream/0/posts/1/repost')
+          endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+          @client.repost '1'
+          a_post('/stream/0/posts/1/repost').should have_been_made
         end
       end
 
