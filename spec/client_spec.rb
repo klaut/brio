@@ -76,7 +76,7 @@ module Brio
         it "should create NullPost if error returned from ADN" do
           @endpoint.to_return(:body => fixture_as_json("error.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           response = @client.post text: @text
-          response.should be_kind_of Resources::NullPost
+          response.should be_kind_of Resources::NullResource
         end
 
         it 'should be able to delete a post' do
@@ -97,6 +97,20 @@ module Brio
           endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           @client.repost '1'
           a_post('/stream/0/posts/1/repost').should have_been_made
+        end
+      end
+
+      describe "dealing with users" do
+        it 'should return my own info' do
+          endpoint = stub_get('/stream/0/users/me')
+          response = @client.user_info
+          a_get('/stream/0/users/me').should have_been_made
+        end
+
+        it 'should return user info defined by id' do
+          endpoint = stub_get('/stream/0/users/1')
+          response = @client.user_info '1'
+          a_get('/stream/0/users/1').should have_been_made
         end
       end
 

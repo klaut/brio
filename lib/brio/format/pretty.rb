@@ -11,8 +11,14 @@ module Brio
         cs[:mention]        = [ :black, :on_white ]
       end
 
+      def print_posts( posts )
+        posts.each do |post|  
+          print_post post
+        end
+      end
+
       def print_post( post )
-        say "<%= color('@#{post.username}', :username) %>"
+        say "<%= color('@#{post.user.username}', :username) %>"
         say "#{post.text}"
         say "<%= color('<id: #{post.id}> <#{pretty_format_time(post.created_at)}>', :end_line) %>"
         say "\n"

@@ -17,14 +17,14 @@ module Brio
         it 'should create one Post object from json data' do
           post = Post.create_from_json @post_json
           post.id.should == '1'
-          post.username.should == 'watura'
+          post.user.username.should == 'watura'
           post.text.should == '@berg FIRST post on this new site #newsocialnetwork'
         end 
 
         it 'should create a NullPost if error returned' do
           post = Post.create_from_json @error_json
           post.text.should == '405 - error message'
-          post.should be_kind_of NullPost
+          post.should be_kind_of NullResource
         end
 
       end
@@ -35,7 +35,7 @@ module Brio
         end
 
         it 'should create may Post objects from the stream json data' do
-          posts = Post.create_many_from_json @stream_json
+          posts = Post.create_from_json @stream_json
           posts.size.should == 20
           posts.each do |p|
             p.should be_kind_of Post

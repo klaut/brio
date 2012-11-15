@@ -56,9 +56,7 @@ command :stream do |c|
   c.action do |global_options,options,args|
     formatter = output_formats[global_options[:format]]
     posts = client.get_stream options[:global], options[:c]
-    posts.each do |post|
-      formatter.print_post post
-    end
+    formatter.print_posts posts
   end
 end
 
@@ -122,7 +120,8 @@ arg_name 'username', :optional
 command :whois do |c|
   #do not forget to attach @
   c.action do |global_options,options,args|
-    puts "whois command ran"
+    user = client.user_info (args[0] || 'me')
+    puts user
   end
 end
 

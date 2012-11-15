@@ -21,10 +21,11 @@ module Brio
       @rc
     end
 
+    # POSTS
     def get_stream( global = false, count = 20 )
       scope = if global then 'global' else '' end
       r = @conn.get stream_url( scope ) ,  { :count => count, :include_deleted => 0 }
-      Resources::Post.create_many_from_json r.body
+      Resources::Post.create_from_json r.body
     end
 
     # @client.post :create, text: "tralala"
@@ -34,11 +35,11 @@ module Brio
     # options = {id:, text:}
     # def dpost( method, options )
     #   verb, id, body_hash = case method
-    #     when :create then [:post, nil, options]
-    #     when :reply then [:post, nil, {reply_to: options[:id], text: options[:text]}]
-    #     when :delete then [:delete, options[:id], nil]
-    #     else method
-    #   end
+    #                         when :create then [:post, nil, options]
+    #                         when :reply then [:post, nil, {reply_to: options[:id], text: options[:text]}]
+    #                         when :delete then [:delete, options[:id], nil]
+    #                         else method
+    #                         end
     #   r = @conn.method(verb).call do |req|
     #     req.url posts_url
     #     req.body = body_hash
@@ -67,6 +68,13 @@ module Brio
         req.url repost_url( id )
       end
       Resources::Post.create_from_json r.body
+    end
+
+    # USERS
+
+    def user_info( id='me')
+      r = @conn.get users_url(id)
+      r.body
     end
 
     private 
