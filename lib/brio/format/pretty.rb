@@ -18,8 +18,12 @@ module Brio
       end
 
       def print_post( post )
-        say "<%= color('@#{post.user.username}', :username) %>"
-        say "#{post.text}"
+        say "<%= color(\"#{post.user.username}\", :username) %>"
+        if post.text
+          say "." * 80
+          say "#{post.text.strip}"
+          say "." * 80
+        end
         say "<%= color('<id: #{post.id}> <#{pretty_format_time(post.created_at)}>', :end_line) %>"
         say "\n"
       end
@@ -31,13 +35,23 @@ module Brio
       end
 
       def print_user( user )
-        say "-" * 40
-        say "<%= color('#{user.name}', :username) %> [@#{user.username}]"
-        say "." * 40
-        say "#{user.description.text}" if user.description.has_key? 'text'
-        say "<%= color('<followers: #{user.counts.followers}, following: #{user.counts.following}> <follows you: #{user.follows_you}, you follow: #{user.you_follow}>', :end_line) %>"
-        say "-" * 40
         say "\n"
+        say "<%= color(\"#{user.name}\", :username) %> [#{user.username}]"
+        if user.description.has_key? 'text'
+          say "." * 80
+          say "#{user.description.text.strip}"
+          say "." * 80
+        end
+        say "<%= color('<followers: #{user.counts.followers}, following: #{user.counts.following}> #{connection_stats user}', :end_line) %>"
+        say "\n"
+      end
+
+      def set_wrap
+        $terminal.wrap_at = 80
+      end
+
+      def connection_stats( user )
+        "<follows you: #{truth_to_tick_char user.follows_you}, you follow: #{truth_to_tick_char user.you_follow}>"
       end
 
 
@@ -45,6 +59,14 @@ module Brio
       def pretty_format_time( timestr )
         time = Time.parse( timestr ).utc.getlocal
         time.strftime("%b %e %H:%M")
+      end
+
+      def truth_to_tick_char( truth_str )
+        if truth_str
+          "\u2714"
+        else
+          "\u2717"
+        end
       end
 
     end

@@ -55,6 +55,7 @@ command :stream do |c|
 
   c.action do |global_options,options,args|
     formatter = output_formats[global_options[:format]]
+    formatter.set_wrap
     params = {count: options[:c].to_i, include_deleted: 0}
     if options[:global]
       posts = client.get_post_stream_global params
@@ -147,6 +148,7 @@ command :whois do |c|
   #do not forget to attach @
   c.action do |global_options,options,args|
     formatter = output_formats[global_options[:format]]
+    formatter.set_wrap
     user = client.get_user (args[0] || 'me')
     formatter.print_user user
   end
@@ -158,7 +160,8 @@ arg_name 'username', :multiple
 command :follow do |c|
   c.action do |global_options,options,args|
     help_now!('username is required') if args.empty?
-    puts "follow command ran"
+    user = client.create_user_follow args[0]
+    say "<%= color('#{user.text}', :red) %>" if user.is_a? Brio::Resources::NullResource
   end
 end
 
@@ -167,7 +170,8 @@ arg_name 'username', :multiple
 command :unfollow do |c|
   c.action do |global_options,options,args|
     help_now!('username is required') if args.empty?
-    puts "follow command ran"
+    user = client.delete_user_follow args[0]
+    say "<%= color('#{user.text}', :red) %>" if user.is_a? Brio::Resources::NullResource
   end
 end
 
@@ -179,6 +183,7 @@ command :list do |c|
   c.command :mentions do |m|
     m.action do |global_options,options,args|
       formatter = output_formats[global_options[:format]]
+      formatter.set_wrap
       posts = client.get_user_mentions (args[0] || 'me')
       formatter.print_posts posts
     end
@@ -190,6 +195,7 @@ command :list do |c|
   c.command :following do |f|
     f.action do |global_options,options,args|
       formatter = output_formats[global_options[:format]]
+      formatter.set_wrap
       users = client.get_user_following (args[0] || 'me')
       formatter.print_users users
     end
@@ -201,8 +207,21 @@ command :list do |c|
   c.command :followers do |f|
     f.action do |global_options,options,args|
       formatter = output_formats[global_options[:format]]
+      formatter.set_wrap
       users = client.get_user_followers (args[0] || 'me')
       formatter.print_users users
+    end
+  end
+
+  c.desc 'list replies to a post'
+  c.arg_name 'postID'
+  c.command :replies do |f|
+    f.action do |global_options,options,args|
+      help_now!('postID is required') if args.empty?
+      formatter = output_formats[global_options[:format]]
+      formatter.set_wrap
+      posts = client.get_post_replies args[0]
+      formatter.print_posts posts
     end
   end
 end
@@ -237,6 +256,7 @@ post do |global,command,options,args|
   # Post logic here
   # Use skips_post before a command to skip this
   # block on that command only
+  $terminal.wrap_at = :auto
 end
 
 on_error do |exception|
