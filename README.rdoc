@@ -1,6 +1,21 @@
 = brio - CLI power tools for appdotnet
 
-Still in development... more coming soon
+brio is a command line application for interfacing with appdotnet social network.
 
-:include:brio.rdoc
+## Instalation ##
+You have to make sure that you have ruby installed. Preferably version 1.9.3 (the latest stable)
+
+Once you've verified that Ruby is installed:
+```
+gem install brio
+```
+## Authorization ##
+brio needs to be authorized with appdotnet to run. To proceed, type the following command at the prompt and follow the instructions:
+```
+brio authorize
+```
+This command will direct you to a URL where you can sign-in to appdotnet, authorize the application, and then enter the returned auth token back into the terminal.
+
+## Usage Examples ##
+
 
