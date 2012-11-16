@@ -45,6 +45,7 @@ module Brio
     describe 'api calls' do  
       before :each do
         Resources::User.stub(:create_from_json)
+        Resources::Post.stub(:create_from_json)
       end
 
       describe "get user info - whois" do

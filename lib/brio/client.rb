@@ -24,47 +24,20 @@ module Brio
     end
 
     def method_missing(method_name, *args, &block)
-      id = args[0] || 'me'
       case 
       when method_name.to_s =~ /(.*)_user(_?(.*))/
+        id = args[0] || 'me'
         users HTTP_VERBS[$1.to_sym], id, $3.gsub(/_/, '/')
+      when method_name.to_s =~ /(.*)_post(_?(.*))/
+        posts HTTP_VERBS[$1.to_sym], args, $3.gsub(/_/, '/')
       else
         super
       end 
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      method_name.to_s =~ /(.*)_user(_?(.*))/
-    end
-
-    # POSTS
-    def get_stream( global = false, count = 20 )
-      scope = if global then 'global' else '' end
-      r = @conn.get stream_url( scope ) ,  { :count => count, :include_deleted => 0 }
-      Resources::Post.create_from_json r.body
-    end
-
-    #body_hash: { text: message, [reply_to: post_id] }
-    def post( body_hash )
-      r = @conn.post do |req|
-        req.url posts_url
-        req.body = body_hash
-      end
-      Resources::Post.create_from_json r.body
-    end
-
-    def delete_post( id )
-      r = @conn.delete do |req|
-        req.url posts_url( id )
-      end
-      Resources::Post.create_from_json r.body
-    end
-
-    def repost( id )
-      r = @conn.post do |req|
-        req.url repost_url( id )
-      end
-      Resources::Post.create_from_json r.body
+      method_name.to_s =~ /(.*)_user(_?(.*))/ ||
+      method_name.to_s =~ /(.*)_post(_?(.*))/
     end
 
 
@@ -74,13 +47,37 @@ module Brio
     end
 
     # USERS
-    def users( verb, username='me', to_append='', body_hash='')
+    def users( verb, username='me', to_append='')
       username = "@#{username}" unless username == 'me'
       r = @conn.method(verb).call do |req|
         req.url "#{users_url username}/#{to_append}"
-        req.body = body_hash
       end
-      Resources::User.create_from_json r.body
+      case to_append
+      when 'mentions', 'stars', 'posts'
+        Resources::Post.create_from_json r.body
+      else
+        Resources::User.create_from_json r.body
+      end
+    end
+
+    #POSTS
+    def posts( verb, args, to_append='')
+      id = if args.first && args.first.is_a?(String) then args.first else "" end
+      params_hash = if args.last && args.last.is_a?(Hash) then args.last else {} end
+      r = @conn.method(verb).call do |req|
+        req.url "#{posts_url id}/#{to_append}"
+        if verb.to_s == 'get'
+          req.params = params_hash
+        else
+          req.body = params_hash
+        end
+      end
+      case to_append
+      when 'reposters', 'stars'
+        Resources::User.create_from_json r.body
+      else
+        Resources::Post.create_from_json r.body
+      end
     end
 
   end

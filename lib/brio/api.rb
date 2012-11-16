@@ -9,7 +9,7 @@ module Brio
     DEFAULT_PROTOCOL = 'https'
 
     REDIRECT_URI = 'https://brioapp.herokuapp.com/auth/callback/'
-    SCOPE = 'stream,email,write_post,follow,messages,export'
+    SCOPE = 'stream,email,write_post,follow,messages,update_profile,export'
     RESPONSE_TYPE = 'token'
 
 
@@ -19,33 +19,12 @@ module Brio
     end
 
     # POSTS
-
-    def stream_url(scope="")
-      "/stream/0/posts/stream/#{scope}"
-    end
-
     def posts_url(id ="")
-      "/stream/0/posts/#{id}"
-    end
-
-    def repost_url(id)
-      "#{posts_url id}/repost"
-    end
-
-    def star_url(id)
-      "#{posts_url id}/star"
-    end
-
-    def post_starred_by_url(id)
-      "#{posts_url id}/stars"
-    end
-
-    def replies_url(id)
-      "#{posts_url id}/replies"
+      id = "/#{id}" unless id.empty?
+      "/stream/0/posts#{id}"
     end
 
     # USERS
-
     def users_url( id = "me")
       "/stream/0/users/#{id}"
     end
