@@ -16,7 +16,7 @@ lib/brio/version.rb
 lib/brio/api.rb
 lib/brio/client.rb
 lib/brio/rcfile.rb
-lib/brio/format/cvs.rb
+lib/brio/format/csv.rb
 lib/brio/format/pretty.rb
 lib/brio/resources/user.rb
 lib/brio/resources/post.rb
