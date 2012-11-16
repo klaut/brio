@@ -47,20 +47,7 @@ module Brio
     # USERS
 
     def users_url( id = "me")
-      # id can be also @username
       "/stream/0/users/#{id}"
-    end
-
-    def user_posts_url(id = 'me')
-      "#{users_url id}/posts"
-    end
-
-    def user_stars_url(id = 'me')
-      "#{users_url id}/stars"
-    end
-
-    def mentions_url(id = 'me')
-      "#{users_url id}/mentions"
     end
 
     private

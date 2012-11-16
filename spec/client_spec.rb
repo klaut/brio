@@ -12,17 +12,6 @@ module Brio
       delete_test_rc_file
     end
 
-    describe "initialization" do
-      before :all do
-        @client = Client.new
-      end
-
-      it "should load config from rc file" do
-        @client.config.empty?.should be_false
-        @client.config['token'] == fixture_as_yaml("brio.rc")['config']['token']
-      end
-    end
-
     describe "api requests" do
       before :each do
         @client = Client.new
@@ -57,15 +46,6 @@ module Brio
           @endpoint = stub_post('/stream/0/posts/')
         end
 
-        # it 'should have a cool post method' do
-        #   @client.dpost :create, text: "tralala"
-        #   @client.dpost :delete, id: '1'
-        #   @client.dpost :reply, to: '1', text: 'yo'
-        #   # @client.post :repost, id: '1'
-        #   # @client.post :star, id: '1'
-        #   # @client.post :replies, id: '1'
-        # end
-
         it "should be OK if posting successful" do
           @endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           response = @client.post text: @text
@@ -97,20 +77,6 @@ module Brio
           endpoint.to_return(:body => fixture_as_json("post.json"), :headers => {:content_type => "application/json; charset=utf-8"})
           @client.repost '1'
           a_post('/stream/0/posts/1/repost').should have_been_made
-        end
-      end
-
-      describe "dealing with users" do
-        it 'should return my own info' do
-          endpoint = stub_get('/stream/0/users/me')
-          response = @client.user_info
-          a_get('/stream/0/users/me').should have_been_made
-        end
-
-        it 'should return user info defined by id' do
-          endpoint = stub_get('/stream/0/users/1')
-          response = @client.user_info '1'
-          a_get('/stream/0/users/1').should have_been_made
         end
       end
 

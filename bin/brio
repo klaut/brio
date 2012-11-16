@@ -120,8 +120,8 @@ arg_name 'username', :optional
 command :whois do |c|
   #do not forget to attach @
   c.action do |global_options,options,args|
-    user = client.user_info (args[0] || 'me')
-    puts user
+    user = client.get_user (args[0] || 'me')
+    puts user.to_yaml
   end
 end
 
@@ -160,7 +160,8 @@ command :list do |c|
   c.arg_name 'username', :optional
   c.command :following do |f|
     f.action do |global_options,options,args|
-      puts "list following command ran"
+      users = client.get_user_following (args[0] || 'me')
+      puts users
     end
   end
 
@@ -169,7 +170,8 @@ command :list do |c|
   c.arg_name 'username', :optional
   c.command :followers do |f|
     f.action do |global_options,options,args|
-      puts "list followers command ran"
+      users = client.get_user_followers (args[0] || 'me')
+      puts users
     end
   end
 end
