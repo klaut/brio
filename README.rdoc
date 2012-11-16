@@ -1,6 +1,58 @@
 = brio - CLI power tools for appdotnet
 
-Still in development... more coming soon
+brio is a command line application for interfacing with appdotnet social network.
 
-:include:brio.rdoc
+== Instalation
+You have to make sure that you have ruby installed. Preferably version 1.9.3 (the latest stable)
+
+Once you've verified that Ruby is installed:
+  
+  gem install brio
+
+== Authorization
+brio needs to be authorized with appdotnet to run. To proceed, type the following command at the prompt and follow the instructions:
+  
+  brio authorize
+
+This command will direct you to a URL where you can sign-in to appdotnet, authorize the application, and then enter the returned auth token back into the terminal.
+
+== Usage Examples
+Typing +brio help+ will list all the available commands. You can type +brio help COMMAND+ to get help for a specific command.
+  
+  brio help
+
+=== Retriving your stream
+  brio stream
+This will return your personalized stream
+
+  brio stream -g
+This returns global stream
+
+By default brio returns 20 posts. appdotnet allows up to max 200 counts. You can set a flag +-c|--count+ if you want to customize the number:
+  brio stream -c 16
+
+=== Post to appdotnet
+  brio post "Hey! I'm posting from the command line!"
+
+=== Reply to a post
+  brio post reply 12345 "hey, this is a reply!"
+Note that we provided first the post id you are making a reply to, and then the message
+
+=== Delete a post
+  brio post delete 1234
+You can only delete a post that you created
+
+=== Repost a post
+  brio post repost 1234
+
+=== Delete a repost
+  brio post repost --rm 1234
+
+=== Star a post
+  brio post star 1234
+
+=== Delete a starred post
+  brio post star --rm 1234
+
+
 
