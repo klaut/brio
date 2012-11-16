@@ -24,7 +24,7 @@ module Brio
           say "#{post.text.strip}"
           say "." * 80
         end
-        say "<%= color('<id: #{post.id}> <#{pretty_format_time(post.created_at)}>', :end_line) %>"
+        say "<%= color('<id: #{post.id}> <#{pretty_format_time(post.created_at)}> <replies #{post.num_replies}>', :end_line) %>"
         say "\n"
       end
 

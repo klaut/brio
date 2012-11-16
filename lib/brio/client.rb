@@ -26,8 +26,7 @@ module Brio
     def method_missing(method_name, *args, &block)
       case 
       when method_name.to_s =~ /(.*)_user(_?(.*))/
-        id = args[0] || 'me'
-        users HTTP_VERBS[$1.to_sym], id, $3.gsub(/_/, '/')
+        users HTTP_VERBS[$1.to_sym], args, $3.gsub(/_/, '/')
       when method_name.to_s =~ /(.*)_post(_?(.*))/
         posts HTTP_VERBS[$1.to_sym], args, $3.gsub(/_/, '/')
       else
@@ -47,10 +46,13 @@ module Brio
     end
 
     # USERS
-    def users( verb, username='me', to_append='')
-      username = "@#{username}" unless username == 'me'
+    def users( verb, args, to_append='')
+      username = get_id_from_args args
+      username = if username.empty? then 'me' else "@#{username}" end
+      params_hash = get_params_from_args args
       r = @conn.method(verb).call do |req|
         req.url "#{users_url username}/#{to_append}"
+        req.params = params_hash
       end
       case to_append
       when 'mentions', 'stars', 'posts'
@@ -62,8 +64,8 @@ module Brio
 
     #POSTS
     def posts( verb, args, to_append='')
-      id = get_post_id_from_args args
-      params_hash = get_post_params_from_args args
+      id = get_id_from_args args
+      params_hash = get_params_from_args args
       r = @conn.method(verb).call do |req|
         req.url "#{posts_url id}/#{to_append}"
         if verb.to_s == 'get'
@@ -80,7 +82,7 @@ module Brio
       end
     end
 
-    def get_post_id_from_args( args )
+    def get_id_from_args( args )
       if args.first && args.first.is_a?(String)
         args.first 
       else 
@@ -88,7 +90,7 @@ module Brio
       end
     end
 
-    def get_post_params_from_args( args )
+    def get_params_from_args( args )
       if args.last && args.last.is_a?(Hash)
         args.last 
       else 
