@@ -54,5 +54,18 @@ You can only delete a post that you created
 === Delete a starred post
   brio post star --rm 1234
 
+=== Get user infrormation
+  brio whois username
+Username can be omitted and it will default to the currently authenticated user - you.
 
+=== Follow a user
+  brio follow username
+
+=== Stop following a user
+  brio unfollow username
+
+
+
+== Copyright
+See LICENSE[https://github.com/klaut/brio/blob/master/LICENSE.txt] for details.
 

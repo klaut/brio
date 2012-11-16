@@ -1,4 +1,4 @@
-module Brio
+ module Brio
   module Format
     require 'time'
     require 'highline/import'
@@ -24,7 +24,7 @@ module Brio
           say "#{post.text.strip}"
           say "." * 80
         end
-        say "<%= color('<id: #{post.id}> <#{pretty_format_time(post.created_at)}> <replies #{post.num_replies}>', :end_line) %>"
+        say "<%= color('<id: #{post.id}#{reply_status post}> <#{pretty_format_time(post.created_at)}> <replies #{post.num_replies}>', :end_line) %>"
         say "\n"
       end
 
@@ -54,6 +54,11 @@ module Brio
         "<follows you: #{truth_to_tick_char user.follows_you}, you follow: #{truth_to_tick_char user.you_follow}>"
       end
 
+      def reply_status( post )
+        if post.reply_to
+          " | in reply to: #{post.reply_to}"
+        end
+      end
 
       private
       def pretty_format_time( timestr )

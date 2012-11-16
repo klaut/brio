@@ -5,7 +5,7 @@ module Brio
     require 'highline/import'
 
     class CSV
-      POST_HEADER = ["id", "timestampt", "username", "text"]
+      POST_HEADER = ["id", "timestampt", "username", "text", "replies"]
       USER_HEADER = ["username", "name", "joined", "followers", "following"]
 
       def print_posts( posts )
@@ -16,7 +16,7 @@ module Brio
       end
 
       def print_post( post )
-        say [post.id, csv_formatted_time(post.created_at), post.user.username, post.text].to_csv
+        say [post.id, csv_formatted_time(post.created_at), post.user.username, post.text, post.num_replies].to_csv
       end
 
       def print_users( users )

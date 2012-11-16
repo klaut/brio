@@ -232,6 +232,18 @@ command :list do |c|
       formatter.print_posts posts
     end
   end
+
+  c.desc 'list posts for a user. Defaults to the current authenticated user'
+  c.arg_name 'username', :optional
+  c.command :posts do |f|
+    f.action do |global_options,options,args|
+      formatter = output_formats[global_options[:format]]
+      formatter.set_wrap
+      params = {count: options[:c].to_i, include_deleted: 0}
+      posts = client.get_user_posts args[0], params
+      formatter.print_posts posts
+    end
+  end
 end
 
 pre do |global,command,options,args|
