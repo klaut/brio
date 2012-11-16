@@ -146,8 +146,9 @@ arg_name 'username', :optional
 command :whois do |c|
   #do not forget to attach @
   c.action do |global_options,options,args|
+    formatter = output_formats[global_options[:format]]
     user = client.get_user (args[0] || 'me')
-    puts user.to_yaml
+    formatter.print_user user
   end
 end
 
@@ -177,7 +178,9 @@ command :list do |c|
   c.arg_name 'username', :optional
   c.command :mentions do |m|
     m.action do |global_options,options,args|
-      puts "list mentions command ran #{args}"
+      formatter = output_formats[global_options[:format]]
+      posts = client.get_user_mentions (args[0] || 'me')
+      formatter.print_posts posts
     end
   end
 
@@ -186,8 +189,9 @@ command :list do |c|
   c.arg_name 'username', :optional
   c.command :following do |f|
     f.action do |global_options,options,args|
+      formatter = output_formats[global_options[:format]]
       users = client.get_user_following (args[0] || 'me')
-      puts users
+      formatter.print_users users
     end
   end
 
@@ -196,8 +200,9 @@ command :list do |c|
   c.arg_name 'username', :optional
   c.command :followers do |f|
     f.action do |global_options,options,args|
+      formatter = output_formats[global_options[:format]]
       users = client.get_user_followers (args[0] || 'me')
-      puts users
+      formatter.print_users users
     end
   end
 end

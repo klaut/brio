@@ -24,6 +24,22 @@ module Brio
         say "\n"
       end
 
+      def print_users( users )
+        users.each do |u|
+          print_user u
+        end
+      end
+
+      def print_user( user )
+        say "-" * 40
+        say "<%= color('#{user.name}', :username) %> [@#{user.username}]"
+        say "." * 40
+        say "#{user.description.text}" if user.description.has_key? 'text'
+        say "<%= color('<followers: #{user.counts.followers}, following: #{user.counts.following}> <follows you: #{user.follows_you}, you follow: #{user.you_follow}>', :end_line) %>"
+        say "-" * 40
+        say "\n"
+      end
+
 
       private
       def pretty_format_time( timestr )

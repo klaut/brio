@@ -62,8 +62,8 @@ module Brio
 
     #POSTS
     def posts( verb, args, to_append='')
-      id = if args.first && args.first.is_a?(String) then args.first else "" end
-      params_hash = if args.last && args.last.is_a?(Hash) then args.last else {} end
+      id = get_post_id_from_args args
+      params_hash = get_post_params_from_args args
       r = @conn.method(verb).call do |req|
         req.url "#{posts_url id}/#{to_append}"
         if verb.to_s == 'get'
@@ -77,6 +77,22 @@ module Brio
         Resources::User.create_from_json r.body
       else
         Resources::Post.create_from_json r.body
+      end
+    end
+
+    def get_post_id_from_args( args )
+      if args.first && args.first.is_a?(String)
+        args.first 
+      else 
+        "" 
+      end
+    end
+
+    def get_post_params_from_args( args )
+      if args.last && args.last.is_a?(Hash)
+        args.last 
+      else 
+        {} 
       end
     end
 

@@ -6,6 +6,7 @@ module Brio
 
     class CSV
       POST_HEADER = ["id", "timestampt", "username", "text"]
+      USER_HEADER = ["username", "name", "description", "followers", "following", "follows you", "you follow"]
 
       def print_posts( posts )
         say POST_HEADER.to_csv
