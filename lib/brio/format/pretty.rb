@@ -4,12 +4,18 @@
     require 'highline/import'
 
     class Pretty
+      attr_accessor :wrap
 
       HighLine.color_scheme = HighLine::ColorScheme.new do |cs|
         cs[:username]        = [ :red ]
         cs[:end_line]        = [ :yellow] #:rgb_aaaaaa
         cs[:mention]        = [ :black, :on_white ]
       end
+
+      def initialize
+        set_wrap
+      end
+
 
       def print_posts( posts )
         posts.each do |post|  
@@ -20,9 +26,9 @@
       def print_post( post )
         say "<%= color(\"#{post.user.username}\", :username) %>"
         if post.text
-          say "." * 100
+          say "." * @wrap
           say "#{post.text.strip}"
-          say "." * 100
+          say "." * @wrap
         end
         say "<%= color('<id: #{post.id} | #{pretty_format_time(post.created_at)}#{reply_status post}> <replies #{post.num_replies}>', :end_line) %>"
         say "\n"
@@ -38,16 +44,21 @@
         say "\n"
         say "<%= color(\"#{user.name}\", :username) %> [#{user.username}]"
         if user.description.has_key? 'text'
-          say "." * 100
+          say "." * @wrap
           say "#{user.description.text.strip}"
-          say "." * 100
+          say "." * @wrap
         end
         say "<%= color('<followers: #{user.counts.followers} | following: #{user.counts.following} | since: #{pretty_format_time(user.created_at, %{%b %e %Y})}> #{connection_stats user}', :end_line) %>"
         say "\n"
       end
 
       def set_wrap
-        $terminal.wrap_at = 100
+        if $terminal.output_cols < 100
+          @wrap = $terminal.output_cols
+        else
+          @wrap = 100
+        end
+        $terminal.wrap_at = @wrap
       end
 
       def connection_stats( user )

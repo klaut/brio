@@ -7,11 +7,20 @@ module Brio
   class Client
     include API
 
-    HTTP_VERBS = { create: 'post', delete: 'delete', get: 'get' }
+    HTTP_VERBS = { 
+      create: 'post', 
+      delete: 'delete', 
+      get: 'get' 
+    }
+
+    METHOD_PATTERNS = {
+      users: /(.*)_user(_?(.*))/,
+      posts: /(.*)_post(_?(.*))/
+    }
 
     def initialize
-      @conn = Faraday.new(:url => base_api_url ) do |faraday|
-        faraday.request  :json #:url_encoded
+      @conn = Faraday.new( :url => base_api_url ) do |faraday|
+        faraday.request  :json
         faraday.response :json, :content_type => /\bjson$/
         faraday.adapter  Faraday.default_adapter
       end
@@ -25,9 +34,9 @@ module Brio
 
     def method_missing(method_name, *args, &block)
       case 
-      when method_name.to_s =~ /(.*)_user(_?(.*))/
+      when method_name.to_s =~ METHOD_PATTERNS[:users]
         users HTTP_VERBS[$1.to_sym], args, $3.gsub(/_/, '/')
-      when method_name.to_s =~ /(.*)_post(_?(.*))/
+      when method_name.to_s =~ METHOD_PATTERNS[:posts]
         posts HTTP_VERBS[$1.to_sym], args, $3.gsub(/_/, '/')
       else
         super
@@ -35,8 +44,8 @@ module Brio
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      method_name.to_s =~ /(.*)_user(_?(.*))/ ||
-      method_name.to_s =~ /(.*)_post(_?(.*))/
+      method_name.to_s =~ METHOD_PATTERNS[:users] ||
+      method_name.to_s =~ METHOD_PATTERNS[:posts]
     end
 
 
