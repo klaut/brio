@@ -3,7 +3,9 @@
 brio is a command line application for interfacing with appdotnet social network.
 
 == Installation
-You have to make sure that you have ruby installed. Preferably version 1.9.2 or 1.9.3 (the latest stable)
+You have to make sure that you have ruby installed, version 1.9.2 or 1.9.3 (the latest stable)
+
+Note! For now it was tested only with RUby versions 1.9.2 and 1.9.3. It does not work on 1.8.7.
 
 Once you've verified that Ruby is installed:
   
