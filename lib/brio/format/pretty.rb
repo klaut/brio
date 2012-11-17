@@ -20,11 +20,11 @@
       def print_post( post )
         say "<%= color(\"#{post.user.username}\", :username) %>"
         if post.text
-          say "." * 80
+          say "." * 100
           say "#{post.text.strip}"
-          say "." * 80
+          say "." * 100
         end
-        say "<%= color('<id: #{post.id}#{reply_status post}> <#{pretty_format_time(post.created_at)}> <replies #{post.num_replies}>', :end_line) %>"
+        say "<%= color('<id: #{post.id} | #{pretty_format_time(post.created_at)}#{reply_status post}> <replies #{post.num_replies}>', :end_line) %>"
         say "\n"
       end
 
@@ -38,20 +38,20 @@
         say "\n"
         say "<%= color(\"#{user.name}\", :username) %> [#{user.username}]"
         if user.description.has_key? 'text'
-          say "." * 80
+          say "." * 100
           say "#{user.description.text.strip}"
-          say "." * 80
+          say "." * 100
         end
-        say "<%= color('<followers: #{user.counts.followers}, following: #{user.counts.following}> #{connection_stats user}', :end_line) %>"
+        say "<%= color('<followers: #{user.counts.followers} | following: #{user.counts.following} | since: #{pretty_format_time(user.created_at, %{%b %e %Y})}> #{connection_stats user}', :end_line) %>"
         say "\n"
       end
 
       def set_wrap
-        $terminal.wrap_at = 80
+        $terminal.wrap_at = 100
       end
 
       def connection_stats( user )
-        "<follows you: #{truth_to_tick_char user.follows_you}, you follow: #{truth_to_tick_char user.you_follow}>"
+        "<follows you: #{truth_to_tick_char user.follows_you} | you follow: #{truth_to_tick_char user.you_follow}>"
       end
 
       def reply_status( post )
@@ -61,9 +61,9 @@
       end
 
       private
-      def pretty_format_time( timestr )
+      def pretty_format_time( timestr, format = "%b %e %H:%M" )
         time = Time.parse( timestr ).utc.getlocal
-        time.strftime("%b %e %H:%M")
+        time.strftime(format)
       end
 
       def truth_to_tick_char( truth_str )

@@ -57,7 +57,7 @@ module Brio
 
         it 'should call user info defined by id' do
           endpoint = stub_get('/stream/0/users/@joe/')
-          @client.get_user 'joe'
+          @client.get_user '@joe'
           a_get('/stream/0/users/@joe/').should have_been_made
         end
       end
@@ -71,13 +71,13 @@ module Brio
 
         it "should call user followers" do
           endpoint = stub_get('/stream/0/users/@joe/followers')
-          @client.get_user_followers 'joe'
+          @client.get_user_followers '@joe'
           a_get('/stream/0/users/@joe/followers').should have_been_made
         end
 
         it "should call user followers by ids" do
           endpoint = stub_get('/stream/0/users/@joe/followers/ids')
-          response = @client.get_user_followers_ids 'joe'
+          response = @client.get_user_followers_ids '@joe'
           a_get('/stream/0/users/@joe/followers/ids').should have_been_made
         end
       end 
@@ -91,13 +91,13 @@ module Brio
 
         it "should call user following" do
           endpoint = stub_get('/stream/0/users/@joe/following')
-          @client.get_user_following 'joe'
+          @client.get_user_following '@joe'
           a_get('/stream/0/users/@joe/following').should have_been_made
         end
 
         it "should call user following by ids" do
           endpoint = stub_get('/stream/0/users/@joe/following/ids')
-          response = @client.get_user_following_ids 'joe'
+          response = @client.get_user_following_ids '@joe'
           a_get('/stream/0/users/@joe/following/ids').should have_been_made
         end
       end 
@@ -105,13 +105,13 @@ module Brio
       describe "follow/unfollow a user" do
         it 'should call follow a user' do
           endpoint = stub_post('/stream/0/users/@joe/follow')
-          @client.create_user_follow 'joe'
+          @client.create_user_follow '@joe'
           a_post('/stream/0/users/@joe/follow').should have_been_made
         end
 
         it 'should call unfollow a user' do
           endpoint = stub_delete('/stream/0/users/@joe/follow')
-          @client.delete_user_follow 'joe'
+          @client.delete_user_follow '@joe'
           a_delete('/stream/0/users/@joe/follow').should have_been_made
         end
       end
@@ -119,13 +119,13 @@ module Brio
       describe "mute/unmute a user" do
         it 'should call mute a user' do
           endpoint = stub_post('/stream/0/users/@joe/mute')
-          @client.create_user_mute 'joe'
+          @client.create_user_mute '@joe'
           a_post('/stream/0/users/@joe/mute').should have_been_made
         end
 
         it 'should call unmute a user' do
           endpoint = stub_delete('/stream/0/users/@joe/mute')
-          @client.delete_user_mute 'joe'
+          @client.delete_user_mute '@joe'
           a_delete('/stream/0/users/@joe/mute').should have_been_made
         end
       end
@@ -139,7 +139,7 @@ module Brio
 
         it "should call user mentions" do
           endpoint = stub_get('/stream/0/users/@joe/mentions')
-          @client.get_user_mentions 'joe'
+          @client.get_user_mentions '@joe'
           a_get('/stream/0/users/@joe/mentions').should have_been_made
         end
 
@@ -151,7 +151,7 @@ module Brio
 
         it "should call user starts" do
           endpoint = stub_get('/stream/0/users/@joe/stars')
-          @client.get_user_stars 'joe'
+          @client.get_user_stars '@joe'
           a_get('/stream/0/users/@joe/stars').should have_been_made
         end
 
@@ -163,7 +163,7 @@ module Brio
 
         it "should call user posts" do
           endpoint = stub_get('/stream/0/users/@joe/posts')
-          @client.get_user_posts 'joe'
+          @client.get_user_posts '@joe'
           a_get('/stream/0/users/@joe/posts').should have_been_made
         end
       end

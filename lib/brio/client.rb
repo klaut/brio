@@ -48,7 +48,7 @@ module Brio
     # USERS
     def users( verb, args, to_append='')
       username = get_id_from_args args
-      username = if username.empty? then 'me' else "@#{username}" end
+      username = 'me' if username.empty?
       params_hash = get_params_from_args args
       r = @conn.method(verb).call do |req|
         req.url "#{users_url username}/#{to_append}"
