@@ -17,6 +17,28 @@ output_formats = {
     'pretty' => Brio::Format::Pretty.new
   }
 
+desc "Read Terms of Service and Privacy Policy."
+skips_pre
+command :tos do |c|
+  c.action do |global_options,options,args|
+    formatter = output_formats['pretty']
+    formatter.set_wrap
+    say <<END
+************* TERMS OF SERVICE ***********
+
+By using this software you agree that in no event shall the authors or copyright holders be liable for any claim, 
+damages or other liability, whether in an action of contract, tort or otherwise, 
+arising from, out of or in connection with the software or the use or other dealings in the software.
+
+Ok, in plain wrods this means that I am not responible for anything that happens to you while using this software.
+
+************* PRIVACY POLICY *************
+This software does not store any infromation about you that is not essential for running it.
+It creates a file called .brio.rc that stores your authorization token inside your $HOME directory. And that is it.
+END
+  end
+end
+
 
 desc 'Optional. Format of the output (default: pretty for TTY, csv otherwise)'
 arg_name 'csv|pretty'

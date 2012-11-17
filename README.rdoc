@@ -3,7 +3,7 @@
 brio is a command line application for interfacing with appdotnet social network.
 
 == Instalation
-You have to make sure that you have ruby installed. Preferably version 1.9.3 (the latest stable)
+You have to make sure that you have ruby installed. Preferably version 1.9.2 or 1.9.3 (the latest stable)
 
 Once you've verified that Ruby is installed:
   
@@ -112,7 +112,7 @@ List posts created by *username*
 List posts created by me (the current authenticated user).
 
   brio list posts -c15
-List my last 15 posts.
+List my last 15 posts.  
 
 == Copyright
 See LICENSE[https://github.com/klaut/brio/blob/master/LICENSE.txt] for details.
