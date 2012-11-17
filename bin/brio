@@ -147,6 +147,7 @@ arg_name '@username', :optional
 command :whois do |c|
   #do not forget to attach @
   c.action do |global_options,options,args|
+    exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
     formatter = output_formats[global_options[:format]]
     formatter.set_wrap
     user = client.get_user (args[0] || 'me')
@@ -160,6 +161,7 @@ arg_name '@username', :multiple
 command :follow do |c|
   c.action do |global_options,options,args|
     help_now!('username is required') if args.empty?
+    exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
     user = client.create_user_follow args[0]
     say "<%= color('#{user.text}', :red) %>" if user.is_a? Brio::Resources::NullResource
   end
@@ -170,6 +172,7 @@ arg_name '@username', :multiple
 command :unfollow do |c|
   c.action do |global_options,options,args|
     help_now!('username is required') if args.empty?
+    exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
     user = client.delete_user_follow args[0]
     say "<%= color('#{user.text}', :red) %>" if user.is_a? Brio::Resources::NullResource
   end
@@ -186,6 +189,7 @@ command :list do |c|
   c.arg_name '@username', :optional
   c.command :mentions do |m|
     m.action do |global_options,options,args|
+      exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
       formatter = output_formats[global_options[:format]]
       formatter.set_wrap
       params = {count: options[:c].to_i, include_deleted: 0}
@@ -199,6 +203,7 @@ command :list do |c|
   c.arg_name '@username', :optional
   c.command :following do |f|
     f.action do |global_options,options,args|
+      exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
       formatter = output_formats[global_options[:format]]
       formatter.set_wrap
       params = {count: options[:c].to_i}
@@ -212,6 +217,7 @@ command :list do |c|
   c.arg_name '@username', :optional
   c.command :followers do |f|
     f.action do |global_options,options,args|
+      exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
       formatter = output_formats[global_options[:format]]
       formatter.set_wrap
       params = {count: options[:c].to_i}
@@ -237,6 +243,7 @@ command :list do |c|
   c.arg_name '@username', :optional
   c.command :posts do |f|
     f.action do |global_options,options,args|
+      exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
       formatter = output_formats[global_options[:format]]
       formatter.set_wrap
       params = {count: options[:c].to_i, include_deleted: 0}
@@ -259,7 +266,7 @@ pre do |global,command,options,args|
     else
       global[:format] = 'csv'
     end
-  end 
+  end
   true
 end
 
