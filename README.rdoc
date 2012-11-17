@@ -114,10 +114,13 @@ List posts created by me (the current authenticated user).
   brio list posts -c15
 List my last 15 posts. 
 
-== Screenshots
-<img src="images/brio-help.png"> 
-<img src="images/brio-stream.png"> 
-<img src="images/brio-whois.png"> 
+== Screenshots 
+
+[Brio Help](https://github.com/klaut/brio/blob/master/images/brio-help.png)
+
+[Brio Stream](https://github.com/klaut/brio/blob/master/images/brio-stream.png)
+
+[Brio Whois](https://github.com/klaut/brio/blob/master/images/brio-whois.png)
 
 == Copyright
 See LICENSE[https://github.com/klaut/brio/blob/master/LICENSE.txt] for details.
