@@ -19,7 +19,7 @@
 
         <header>
           <h1>Brio</h1>
-          <h2>CLI power tools for appdotnet</h2>
+          <h2>CLI power tools for app.net</h2>
         </header>
 
         <section id="downloads" class="clearfix">
@@ -31,9 +31,186 @@
         <hr>
 
         <section id="main_content">
-          <h3>Still in development</h3>
+          <h1>brio - CLI power tools for appdotnet</h1>
 
-<p>more coming soon ...</p>
+<p>brio is a command line application for interfacing with appdotnet social network.</p>
+
+<h2>Instalation</h2>
+
+<p>You have to make sure that you have ruby installed. Preferably version 1.9.2 or 1.9.3.</p>
+
+<p>Once you've verified that Ruby is installed:</p>
+
+<pre><code>gem install brio
+</code></pre>
+
+<h2>Authorization</h2>
+
+<p>brio needs to be authorized with appdotnet to run. To proceed, type the following command at the prompt and follow the instructions:</p>
+
+<pre><code>brio authorize
+</code></pre>
+
+<p>This command will direct you to a URL where you can sign-in to appdotnet, authorize the application, and then enter the returned auth token back into the terminal.</p>
+
+<h2>Usage Examples</h2>
+
+<p>Typing <code>brio help</code> will list all the available commands. You can type <code>brio help COMMAND</code> to get help for a specific command.</p>
+
+<pre><code>brio help
+</code></pre>
+
+<h3>Retriving your stream</h3>
+
+<pre><code>brio stream
+</code></pre>
+
+<p>This will return your personalized stream
+    brio stream -g
+This returns global stream</p>
+
+<p>By default brio returns 20 posts. appdotnet allows up to max 200 counts. You can set a flag <code>-c | --count</code> if you want to customize the number:
+    brio stream -c16</p>
+
+<p>You can also use them together:
+    brio stream -gc50</p>
+
+<h3>Post Methods</h3>
+
+<h4>Create a post</h4>
+
+<pre><code>brio post "Hey! I'm posting from the command line!"
+</code></pre>
+
+<h4>Reply to a post</h4>
+
+<pre><code>brio post reply 12345 "hey, this is a reply!"
+</code></pre>
+
+<p>Note that we provided first the post id you are making a reply to, and then the message</p>
+
+<h4>Delete a post</h4>
+
+<pre><code>brio post delete 1234
+</code></pre>
+
+<p>You can only delete a post that you created</p>
+
+<h4>Repost a post</h4>
+
+<pre><code>brio post repost 1234
+</code></pre>
+
+<h4>Delete a repost</h4>
+
+<pre><code>brio post repost --rm 1234
+</code></pre>
+
+<h4>Star a post</h4>
+
+<pre><code>brio post star 1234
+</code></pre>
+
+<h4>Delete a starred post</h4>
+
+<pre><code>brio post star --rm 1234
+</code></pre>
+
+<h3>Get user information</h3>
+
+<pre><code>brio whois @username
+</code></pre>
+
+<p>Username can be omitted and it will default to the currently authenticated user - you.</p>
+
+<h3>Follow a user</h3>
+
+<pre><code>brio follow @username
+</code></pre>
+
+<h3>Stop following a user</h3>
+
+<pre><code>brio unfollow @username
+</code></pre>
+
+<h3>List Methods</h3>
+
+<p>All the list subcommands can take an optional count flag. When provided, it will return an arbitrary number of listing. By default, brio returns last 20 items.</p>
+
+<h4>Mentions</h4>
+
+<pre><code>brio list mentions
+</code></pre>
+
+<p>This will list the posts that mention you.</p>
+
+<pre><code>brio list mentions @username
+</code></pre>
+
+<p>This will list the posts that mention <em>username</em></p>
+
+<pre><code>brio list mentions -c10 @username
+</code></pre>
+
+<p>List last 10 menitons for <em>username</em></p>
+
+<h4>Followers</h4>
+
+<pre><code>brio list followers @username
+</code></pre>
+
+<p>This will list people that follow <em>username</em>
+You can also omit <em>username</em> and brio will list your followers. </p>
+
+<pre><code>brio list followers -c50
+</code></pre>
+
+<p>List my last 50 followers</p>
+
+<h4>Following</h4>
+
+<pre><code>brio list following
+</code></pre>
+
+<p>List people I follow.</p>
+
+<pre><code>brio list following @username
+</code></pre>
+
+<p>List people that <em>username</em> is following.</p>
+
+<h4>Replies</h4>
+
+<pre><code>brio list replies 1234
+</code></pre>
+
+<p>List replies of a post with id 1234.</p>
+
+<pre><code>brio list replies 1234 -c12
+</code></pre>
+
+<p>List last 12 replies for a post.</p>
+
+<h4>Posts</h4>
+
+<pre><code>brio list posts @username
+</code></pre>
+
+<p>List posts created by <em>username</em></p>
+
+<pre><code>brio list posts
+</code></pre>
+
+<p>List posts created by me (the current authenticated user).</p>
+
+<pre><code>brio list posts -c15
+</code></pre>
+
+<p>List my last 15 posts.</p>
+
+<h2>Copyright</h2>
+
+<p>See <a href="https://github.com/klaut/brio/blob/master/LICENSE.txt">LICENSE</a> for details.</p>
         </section>
 
         <footer>
