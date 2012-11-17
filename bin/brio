@@ -101,7 +101,7 @@ command :post do |c|
     end
     help_now!('message is required') if message.empty?
     post =  client.create_post text: message
-    say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullResource
+    say "<%= color(\"#{post.text}\", :red) %>" if post.is_a? Brio::Resources::NullResource
   end
 
   c.desc 'Reply to a post'
@@ -116,7 +116,7 @@ command :post do |c|
       end
       help_now!('postID and message are both required') if message.empty?
       post =  client.create_post reply_to: args[0], text: message
-      say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullResource
+      say "<%= color(\"#{post.text}\", :red) %>" if post.is_a? Brio::Resources::NullResource
     end
   end
 
@@ -126,7 +126,7 @@ command :post do |c|
     delete.action do |global_options,options,args|
       help_now!('postID is required') if args.empty?
       post = client.delete_post args[0]
-      say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullResource
+      say "<%= color(\"#{post.text}\", :red) %>" if post.is_a? Brio::Resources::NullResource
     end
   end
 
@@ -143,7 +143,7 @@ command :post do |c|
       else
         post = client.create_post_repost args[0]
       end
-      say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullResource
+      say "<%= color(\"#{post.text}\", :red) %>" if post.is_a? Brio::Resources::NullResource
     end
   end
 
@@ -157,7 +157,7 @@ command :post do |c|
       else
         post = client.create_post_star args[0]
       end
-      say "<%= color('#{post.text}', :red) %>" if post.is_a? Brio::Resources::NullResource
+      say "<%= color(\"#{post.text}\", :red) %>" if post.is_a? Brio::Resources::NullResource
     end
   end
 
@@ -185,7 +185,7 @@ command :follow do |c|
     help_now!('username is required') if args.empty?
     exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
     user = client.create_user_follow args[0]
-    say "<%= color('#{user.text}', :red) %>" if user.is_a? Brio::Resources::NullResource
+    say "<%= color(\"#{user.text}\", :red) %>" if user.is_a? Brio::Resources::NullResource
   end
 end
 
@@ -196,7 +196,7 @@ command :unfollow do |c|
     help_now!('username is required') if args.empty?
     exit_now!('username must start with @') if !args.empty? and !args[0].start_with?('@')
     user = client.delete_user_follow args[0]
-    say "<%= color('#{user.text}', :red) %>" if user.is_a? Brio::Resources::NullResource
+    say "<%= color(\"#{user.text}\", :red) %>" if user.is_a? Brio::Resources::NullResource
   end
 end
 
