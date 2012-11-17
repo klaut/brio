@@ -116,11 +116,12 @@ List my last 15 posts.
 
 == Screenshots 
 
-![Brio Help](https://github.com/klaut/brio/blob/master/images/brio-help.png)
+img:images/brio-help.png
 
-![Brio Stream](https://github.com/klaut/brio/blob/master/images/brio-stream.png)
+img:images/brio-stream.png
 
-![Brio Whois](https://github.com/klaut/brio/blob/master/images/brio-whois.png)
+img:images/brio-whois.png
+
 
 == Copyright
 See LICENSE[https://github.com/klaut/brio/blob/master/LICENSE.txt] for details.
