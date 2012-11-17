@@ -12,6 +12,7 @@ spec = Gem::Specification.new do |s|
 # Add your other files here if you make them
   s.files = %w(
 bin/brio
+lib/brio/utils.rb
 lib/brio/version.rb
 lib/brio/api.rb
 lib/brio/client.rb
