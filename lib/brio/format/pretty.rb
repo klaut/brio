@@ -6,6 +6,8 @@
     class Pretty
       attr_accessor :wrap
 
+      WRAP_SIZE = 110
+
       HighLine.color_scheme = HighLine::ColorScheme.new do |cs|
         cs[:username]        = [ :red ]
         cs[:end_line]        = [ :yellow] #:rgb_aaaaaa
@@ -24,13 +26,13 @@
       end
 
       def print_post( post )
-        say "<%= color(\"#{post.user.username}\", :username) %>"
+        say "<%= color(\"@#{post.user.username}\", :username) %>"
         if post.text
           say "." * @wrap
           say "#{post.text.strip}"
           say "." * @wrap
         end
-        say "<%= color('<id: #{post.id} | #{pretty_format_time(post.created_at)}#{reply_status post}> <replies #{post.num_replies}>', :end_line) %>"
+        say "<%= color('<id: #{post.id} | #{pretty_format_time(post.created_at)}#{reply_status post}> <replies #{post.num_replies} | stars #{post.num_stars} | reposts #{post.num_reposts}>', :end_line) %>"
         say "\n"
       end
 
@@ -53,10 +55,10 @@
       end
 
       def set_wrap
-        if $terminal.output_cols < 100
+        if $terminal.output_cols < WRAP_SIZE
           @wrap = $terminal.output_cols
         else
-          @wrap = 100
+          @wrap = WRAP_SIZE
         end
         $terminal.wrap_at = @wrap
       end
@@ -66,9 +68,14 @@
       end
 
       def reply_status( post )
+        msg = ""
         if post.reply_to
-          " | in reply to: #{post.reply_to}"
+          msg << " | in reply to: #{post.reply_to}"
         end
+        if post.repost_of
+          msg << " | repost of: #{post.repost_of.id}"
+        end
+        msg
       end
 
       private

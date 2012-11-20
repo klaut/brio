@@ -141,3 +141,5 @@ img:images/brio-whois.png
 == Copyright
 See LICENSE[https://github.com/klaut/brio/blob/master/LICENSE.txt] for details.
 
+:include:brio.rdoc
+
