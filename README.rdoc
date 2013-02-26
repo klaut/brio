@@ -11,6 +11,19 @@ Once you've verified that Ruby is installed:
   
   gem install brio
 
+== Troubleshooting
+
+==== I am getting SSL errors, help!
+If you are getting a similar message to this:
+
+  SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed on error;
+
+you will need to install some openssl packages:
+
+  $ rvm pkg install openssl  
+  $ rvm reinstall 1.9.3 --with-openssl-dir=$rvm_path/usr
+
+
 == Authorization
 brio needs to be authorized with appdotnet to run. To proceed, type the following command at the prompt and follow the instructions:
   
