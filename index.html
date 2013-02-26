@@ -208,6 +208,18 @@ You can also omit <em>username</em> and brio will list your followers. </p>
 
 <p>List my last 15 posts.</p>
 
+<h2>Troubleshooting</h2>
+
+<h4>I am getting SSL errors, help!</h4>
+<p>If you are getting a similar message to this:</p>
+<pre><code> I'm getting error: SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed on error;</code></pre>
+
+<p>you will need to install some openssl packages:</p>
+<pre><code> 
+$ rvm pkg install openssl  
+$ rvm reinstall 1.9.3 --with-openssl-dir=$rvm_path/usr
+</code></pre>
+
 <h2>Screenshots</h2>
 
 <p><img src="images/brio-help.png"></p>
