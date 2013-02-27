@@ -11,7 +11,7 @@ PATH
       launchy (>= 2.1)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     addressable (2.3.2)
     aruba (0.5.0)
