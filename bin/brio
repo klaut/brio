@@ -57,7 +57,7 @@ command :authorize do |c|
       Launchy.open client.oauth_url
       token = ask "Enter your oauth token:"
 
-      client.config['token'] = token
+      client.config['token'] = token.to_s
       say "<%= color('Authorization successful.', :green) %>"
     else
       say "<%= color('You already authorized with app.net', :red) %>"
