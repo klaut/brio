@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    brio (0.0.3)
+    brio (0.0.4)
       faraday (>= 0.8)
       faraday_middleware (>= 0.8.8)
       gli (~> 2.4)
