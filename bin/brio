@@ -13,9 +13,10 @@ version Brio::VERSION
 client = Brio::Client.new
 
 output_formats = {
-    'csv' => Brio::Format::CSV.new,
-    'pretty' => Brio::Format::Pretty.new
-  }
+  'csv'       => Brio::Format::CSV.new,
+  'condensed' => Brio::Format::Condensed.new,
+  'pretty'    => Brio::Format::Pretty.new
+}
 
 desc "Read Terms of Service and Privacy Policy."
 skips_pre
@@ -23,7 +24,7 @@ command :tos do |c|
   c.action do |global_options,options,args|
     formatter = output_formats['pretty']
     formatter.set_wrap
-    say <<END
+    say <<-END
 ************* TERMS OF SERVICE ***********
 
 By using this software you agree that in no event shall the authors or copyright holders be liable for any claim, 
@@ -41,7 +42,7 @@ end
 
 
 desc 'Optional. Format of the output (default: pretty for TTY, csv otherwise)'
-arg_name 'csv|pretty'
+arg_name 'csv|condensed|pretty'
 flag :format
 
 desc 'authorize brio with app.net'
