@@ -9,6 +9,7 @@
       WRAP_SIZE = 110
 
       def initialize
+        ::Brio::Utils.set_highline_colors
         set_wrap
       end
 
