@@ -20,5 +20,8 @@ module Brio
         cs[:end_line] = [:yellow]
       end
     end
+    def self.colored_text(text, color_key)
+      "<%= color(\"#{text}\", :#{color_key}) %>"
+    end
   end
 end
