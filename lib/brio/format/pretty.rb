@@ -8,12 +8,6 @@
 
       WRAP_SIZE = 110
 
-      HighLine.color_scheme = HighLine::ColorScheme.new do |cs|
-        cs[:username]        = [ :red ]
-        cs[:end_line]        = [ :yellow] #:rgb_aaaaaa
-        cs[:mention]        = [ :black, :on_white ]
-      end
-
       def initialize
         set_wrap
       end
